@@ -6,9 +6,10 @@ const jwt = require("jsonwebtoken");
 const auth = require("./middleware/auth");
 const app = express();
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 // here all varables are defined
-const port = 4040;
+const port = 5000;
 const jwtSecret = process.env.JWT_SECRET_KEY;
 
 // conncted to db
@@ -23,6 +24,13 @@ try {
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "UPDATE", "DELETE"],
+    credentials: true,
+  })
+);
 
 app.get("/profile", (req, res) => {
   try {
@@ -51,7 +59,11 @@ app.post("/signup", async (req, res) => {
       {},
       (err, token) => {
         res
-          .cookie("token", token, { secure: true, sameSite: "none" })
+          .cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+          })
           .status(201)
           .json({ id: createdUser._id, username });
         if (err) throw err;
