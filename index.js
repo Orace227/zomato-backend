@@ -53,6 +53,9 @@ app.post("/signup", async (req, res) => {
   try {
     const { username, email, password } = req.body;
     const createdUser = await User.create({ username, email, password });
+    const fetchedUser = await User.findOne({ email, password }).select(
+      "-password"
+    );
     jwt.sign(
       { userid: createdUser._id, username },
       jwtSecret,
@@ -65,7 +68,7 @@ app.post("/signup", async (req, res) => {
             sameSite: "none",
           })
           .status(201)
-          .json({ id: createdUser._id, username });
+          .json(fetchedUser);
         if (err) throw err;
       }
     );
@@ -78,11 +81,28 @@ app.post("/signup", async (req, res) => {
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(email, password);
+    // console.log(email, password);
 
-    const checkedUser = await User.findOne({ email, password });
+    const checkedUser = await User.findOne({ email, password }).select(
+      "-password"
+    );
     if (checkedUser) {
-      res.status(200).json(checkedUser);
+      jwt.sign(
+        { userid: checkedUser._id, username: checkedUser.username },
+        jwtSecret,
+        {},
+        (err, token) => {
+          res
+            .cookie("token", token, {
+              httpOnly: true,
+              secure: true,
+              sameSite: "none",
+            })
+            .status(201)
+            .json(checkedUser);
+          if (err) throw err;
+        }
+      );
     } else {
       res.status(404).json("user not found");
     }
