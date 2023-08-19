@@ -195,18 +195,28 @@ app.post("/editProfile", async (req, res) => {
 //   try {
 //     const { lat, lng } = req.query;
 //     console.log({ lat, lng });
-//     const swiggyApiUrl = `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${lat}&lng=${lng}`;
+//     let cardsData = [];
+//     const swiggyApiUrl = `https://www.swiggy.com/dapi/restaurants/list/v5?lat=23.0225&lng=72.5714`;
 //     const headers = {
-//       "Content-Type": "application/json",
+//       "Content-Type": "text/html",
 //     };
 //     const response = await axios.get(swiggyApiUrl, { headers });
 
+//     for (let i = 0; i < 20; i++) {
+//       cardsData.push(
+//         response.data.data.cards[2].card.card.gridElements.infoWithStyle
+//           ?.restaurants[i]
+//       );
+//     }
+//     console.log(cardsData);
+
 //     // res.json(response.data);
 //   } catch (error) {
-//     console.log(error);
+//     console.log("Error:", error);
 //     // res.json(error);
 //   }
 // });
+
 //////////////////////server erea ////////////////////////
 
 app.listen(port, () => {
