@@ -1,15 +1,14 @@
 const connectToMongo = require("../db");
 
+const client = connectToMongo();
+if (!client) {
+  return res.status(500).json({ error: "Failed to connect to the database" });
+}
+
+const collection = client.collection("Products");
+
 exports.AddProduct = async (req, res) => {
   try {
-    const client = connectToMongo();
-    if (!client) {
-      return res
-        .status(500)
-        .json({ error: "Failed to connect to the database" });
-    }
-
-    const collection = client.collection("Products");
     const { cards } = req.body;
 
     if (!cards || !Array.isArray(cards) || cards.length === 0) {
@@ -27,5 +26,19 @@ exports.AddProduct = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "An internal server error occurred" });
+  }
+};
+
+exports.GetProducts = async (req, res) => {
+  try {
+    const Products = await collection.find({}).toArray();
+    // console.log(Products);
+    if (Products) {
+      res.status(200).json(Products);
+    } else {
+      res.status(404).json("Products not found");
+    }
+  } catch (err) {
+    console.log(err);
   }
 };

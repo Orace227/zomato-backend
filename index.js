@@ -9,7 +9,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const axios = require("axios");
 
-const { AddProduct } = require("./controllers/Products.js");
+const { AddProduct, GetProducts } = require("./controllers/Products.js");
 const connectToMongo = require("./db");
 
 // here all varables are defined
@@ -223,6 +223,9 @@ app.post("/editProfile", async (req, res) => {
 
 app.post("/AddProducts", AddProduct);
 
+////////////////////// get Products ////////////////////////
+
+app.post("/GetProducts", GetProducts);
 //////////////////////server erea ////////////////////////
 
 app.listen(port, () => {
