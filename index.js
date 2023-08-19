@@ -32,6 +32,10 @@ app.use(
   })
 );
 
+app.get("/", (req, res) => {
+  res.json("api working");
+});
+
 app.get("/profile", (req, res) => {
   try {
     let token = req.cookies?.token;
