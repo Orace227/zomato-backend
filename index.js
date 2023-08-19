@@ -8,19 +8,17 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const axios = require("axios");
+
+const { AddProduct } = require("./controllers/Products.js");
+const connectToMongo = require("./db");
+
 // here all varables are defined
+
 const port = 5000;
 const jwtSecret = process.env.JWT_SECRET_KEY;
 
 // conncted to db
-try {
-  const conn = mongoose.connect(process.env.MONGO_URL);
-  if (conn) {
-    console.log("connection is established on " + process.env.MONGO_URL);
-  }
-} catch (err) {
-  console.log(err.message);
-}
+const db = connectToMongo();
 
 app.use(express.json());
 app.use(cookieParser());
@@ -220,6 +218,10 @@ app.post("/editProfile", async (req, res) => {
 //     // res.json(error);
 //   }
 // });
+
+////////////////////// Add Products ////////////////////////
+
+app.post("/AddProducts", AddProduct);
 
 //////////////////////server erea ////////////////////////
 
