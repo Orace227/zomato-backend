@@ -22,8 +22,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    // origin: "http://localhost:3000",
-    origin: "https://zomato-frontend-vert.vercel.app/",
+    origin: process.env.CLIENT_URL,
     methods: ["GET", "POST", "UPDATE", "DELETE"],
     credentials: true,
   })
