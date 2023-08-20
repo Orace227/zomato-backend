@@ -2,7 +2,6 @@ const jwtSecret = process.env.JWT_SECRET_KEY;
 const User = require("../../schemas/UserSchema");
 const jwt = require("jsonwebtoken");
 
-
 exports.signup = async (req, res) => {
   try {
     const { username, email, password } = req.body;
