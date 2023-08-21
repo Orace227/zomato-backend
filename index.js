@@ -10,6 +10,7 @@ const { login } = require("./controllers/auth/Login");
 const { logout } = require("./controllers/auth/Logout");
 const { GetProfile } = require("./controllers/Profile/GetProfile");
 const { editprofile } = require("./controllers/Profile/EditProfile");
+const { DeleteAccount } = require("./controllers/auth/DeleteAccount.js");
 
 // here all varables are defined
 
@@ -44,6 +45,8 @@ app.post("/login", login);
 
 ////////////////////// log out  //////////////////////
 app.get("/logout", logout);
+
+app.post("/deleteAccount", DeleteAccount);
 
 ////////////////////// Get profile //////////////////////
 app.get("/profile", GetProfile);
